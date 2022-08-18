@@ -7,7 +7,9 @@ namespace Casino.Networking
     {
         public WebSocket ws;
 
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = "";
+
+        public bool waitingForMessage = false;
 
         public Client(string url)
         {
@@ -24,6 +26,8 @@ namespace Casino.Networking
 
             ws.OnMessage += (sender, e) =>
             {
+                // if (waitingForMessage) waitingForMessage = false;
+
                 Message msg = JsonSerializer.Deserialize<Message>(e.Data);
 
                 if (ClientId == "" && msg.type == "ID-ACK")
